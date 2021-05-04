@@ -5,7 +5,7 @@ Return Recipe information from a provided URL.
 
 
 
-Run the App
+Run the App Locally
 --
 Requirements: Docker
 
