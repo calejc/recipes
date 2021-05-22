@@ -23,14 +23,15 @@ class Schema:
 
 class Recipe:
     def __init__(self, schema):
+        self.ingredients = None # Set later after sending ingredient strings through the parser
         self.title = schema['name']
         self.description = schema['description']
         self.totalTime = schema['totalTime'] if 'totalTime' in schema else ''
         self.cookTime = schema['cookTime'] if 'cookTime' in schema else ''
         self.prepTime = schema['prepTime'] if 'prepTime' in schema else ''
         self.servings = schema['recipeYield'] if 'recipeYield' in schema else ''
-        self.ingredients = [Ingredient(s).__dict__ for s in schema['recipeIngredient']]
         self.instructions = [Instruction(i, c).__dict__ for i, c in enumerate(schema['recipeInstructions'])]
+        self.fullStringIngredients = [s for s in schema['recipeIngredient']]
 
         categories = [Category(c).__dict__ for c in schema['recipeCategory']]
         cuisines = [Category(c).__dict__ for c in schema['recipeCuisine'] if 'recipeCuisine' in schema]
@@ -42,7 +43,10 @@ class Ingredient:
     Ingredient entity 
     """
     def __init__(self, schema):
-        self.name = schema
+        self.full = schema['input']
+        self.content = schema['name']
+        self.quantity = schema['qty'] if 'qty' in schema else schema['other'] if 'other' in schema else ''
+        self.measure = schema['unit'] if 'unit' in schema else ''
 
 
 class Instruction:
