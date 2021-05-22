@@ -15,5 +15,6 @@ def parsee(url):
             parsed = json.loads(parse_ingredients(recipe.fullStringIngredients))
             recipe.ingredients = [Ingredient(i).__dict__ for i in parsed]
             return recipe
-        except:
+        except Exception as e:
+            print(e)
             return None
