@@ -26,6 +26,7 @@ class Recipe:
         self.ingredients = None # Set later after sending ingredient strings through the parser
         self.title = schema['name']
         self.description = schema['description']
+        self.photoUrl = schema['image'][0] if 'image' in schema else ''
         self.totalTime = schema['totalTime'] if 'totalTime' in schema else ''
         self.cookTime = schema['cookTime'] if 'cookTime' in schema else ''
         self.prepTime = schema['prepTime'] if 'prepTime' in schema else ''
@@ -44,7 +45,7 @@ class Ingredient:
     """
     def __init__(self, schema):
         self.full = schema['input']
-        self.content = schema['name']
+        self.content = schema['name'] if 'name'
         self.quantity = schema['qty'] if 'qty' in schema else schema['other'] if 'other' in schema else ''
         self.measure = schema['unit'] if 'unit' in schema else ''
 
