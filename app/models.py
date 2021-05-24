@@ -44,7 +44,7 @@ class Ingredient:
     Ingredient entity 
     """
     def __init__(self, schema):
-        self.full = schema['input']
+        self.full = schema['input'] if 'input' in schema else ''
         self.content = schema['name'] if 'name' in schema else ''
         self.quantity = schema['qty'] if 'qty' in schema else schema['other'] if 'other' in schema else ''
         self.measure = schema['unit'] if 'unit' in schema else ''
