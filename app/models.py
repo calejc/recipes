@@ -34,13 +34,8 @@ class Recipe:
         self.servings = schema['recipeYield'] if 'recipeYield' in schema else ''
         self.instructions = [Instruction(i, c).__dict__ for i, c in enumerate(schema['recipeInstructions'])]  if 'recipeInstructions' in schema else []
         self.ingredients = [s for s in schema['recipeIngredient']] if 'recipeIngredient' in schema else []
-
         self.set_categories(schema)
 
-#        categories = [Category(c).__dict__ for c in schema['recipeCategory']]
-#        cuisines = [Category(c).__dict__ for c in schema['recipeCuisine']] if 'recipeCuisine' in schema else []
-#        self.categories = categories + cuisines
-    
     def set_categories(self, schema):
         keys = ['recipeCategory', 'recipeCuisine']
         for k in keys:
