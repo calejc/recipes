@@ -24,6 +24,7 @@ class Schema:
 class Recipe:
     def __init__(self, schema):
         self.ingredients = None # Set later after sending ingredient strings through the parser
+        self.categories = [] # Set later, combining multiple schema keys
         self.title = schema['name'] if 'name' in schema else ''
         self.description = schema['description'] if 'description' in schema else '' 
         self.photoUrl = schema['image'][0] if 'image' in schema else ''
@@ -32,11 +33,22 @@ class Recipe:
         self.prepTime = schema['prepTime'] if 'prepTime' in schema else ''
         self.servings = schema['recipeYield'] if 'recipeYield' in schema else ''
         self.instructions = [Instruction(i, c).__dict__ for i, c in enumerate(schema['recipeInstructions'])]  if 'recipeInstructions' in schema else []
-        self.fullStringIngredients = [s for s in schema['recipeIngredient']] if 'recipeIngredient' in schema else []
+        self.ingredients = [s for s in schema['recipeIngredient']] if 'recipeIngredient' in schema else []
 
-        categories = [Category(c).__dict__ for c in schema['recipeCategory']]
-        cuisines = [Category(c).__dict__ for c in schema['recipeCuisine']] if 'recipeCuisine' in schema else []
-        self.categories = categories + cuisines
+        self.set_categories(schema)
+
+#        categories = [Category(c).__dict__ for c in schema['recipeCategory']]
+#        cuisines = [Category(c).__dict__ for c in schema['recipeCuisine']] if 'recipeCuisine' in schema else []
+#        self.categories = categories + cuisines
+    
+    def set_categories(self, schema):
+        keys = ['recipeCategory', 'recipeCuisine']
+        for k in keys:
+            if k in schema and isinstance(schema[k], list):
+                self.categories = [*self.categories, *[Category(c).__dict__ for c in schema[k]]]
+            elif k in schema and isinstance(schema[k], str):
+                self.categories = [*self.categories, *[Category(schema[k]).__dict__]]
+            
 
 
 class Ingredient:
